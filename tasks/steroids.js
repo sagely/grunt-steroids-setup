@@ -8,7 +8,8 @@
 
 'use strict';
 
-var spawn = require('child_process').spawn;
+var spawn = require('child_process').spawn,
+    byline = require('byline');
 
 module.exports = function(grunt) {
 
@@ -55,7 +56,8 @@ module.exports = function(grunt) {
     });
   });
 
-  grunt.registerMultiTask('steroids-simulate', 'Run the currnet build in the simulator', function() {
+
+  grunt.registerMultiTask('steroids-simulate', 'Run the current build in the simulator', function() {
     var done = this.async();
 
     // Merge task-specific and/or target-specific options with these defaults.
@@ -107,5 +109,57 @@ module.exports = function(grunt) {
         done();
       }, 60000);
     });
+  });
+
+
+  grunt.registerMultiTask('steroids-device', 'Run the current build on a device', function() {
+    var done = this.async();
+
+    // Merge task-specific and/or target-specific options with these defaults.
+    var options = this.options({
+      buildFolder: './build',
+      steroidsPath: ''
+    });
+
+    // Make sure the paths have a trailing slash
+    if (options.buildFolder.substr(-1) !== '/') {
+      options.buildFolder += '/';
+    }
+
+    if (!grunt.file.exists(options.buildFolder + 'steroids')) {
+      grunt.log.writeln('Steroids build directory does not exist');
+      done();
+      return;
+    }
+
+    console.log('Starting steroids...');
+    var steroids = spawn('steroids', ['connect', '--terminal-qrcode'], {
+      cwd: options.buildFolder + 'steroids'
+    });
+
+    var running = false;
+    byline(steroids.stdout).on('data', function (data) {
+      if (data && data.toString().length > 100)  {
+        console.log(data.toString());
+      }
+      if (data && data.toString().indexOf('Hit [enter]') > -1 && !running) {
+        running = true;
+
+        console.log('\n\n... Waiting for user to scan QR code ...');
+      }
+      if (data && data.toString().indexOf('Number of clients connected') > 0 && running) {
+        setTimeout(function() {
+          steroids.stdin.write('exit');
+          steroids.kill('SIGKILL');
+          done();
+        }, 2000);
+      }
+    });
+
+    setTimeout(function() {
+      console.log('User is taking to long... Killing it.');
+      steroids.kill('SIGKILL');
+      done();
+    }, 90000);
   });
 };
