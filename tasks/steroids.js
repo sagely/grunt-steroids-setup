@@ -10,6 +10,7 @@
 
 var spawn = require('child_process').spawn,
     byline = require('byline'),
+    plugman = require('plugman'),
     async = require('async');
 
 module.exports = function(grunt) {
@@ -165,6 +166,57 @@ module.exports = function(grunt) {
   });
 
 
+  grunt.registerMultiTask('cordova-platform', 'Add platforms', function() {
+    var done = this.async();
+
+    // Merge task-specific and/or target-specific options with these defaults.
+    var options = this.options({
+      buildFolder: './build',
+      cordovaPath: '',
+      platforms: []
+    });
+
+    // Make sure the paths have a trailing slash
+    if (options.buildFolder.substr(-1) !== '/') {
+      options.buildFolder += '/';
+    }
+
+    if (!grunt.file.exists(options.buildFolder + 'steroids')) {
+      grunt.log.writeln('Steroids build directory does not exist');
+      done();
+      return;
+    }
+
+    console.log('Installing Cordova platforms:');
+    async.eachSeries(options.platforms, function (platformID, nextPlugin) {
+      if (!grunt.file.exists(options.buildFolder + 'steroids/platforms/' + platformID)) {
+        console.log('  ' + platformID);
+        grunt.util.spawn({
+          cmd: options.cordovaPath + 'cordova',
+          opts: {
+            cwd: options.buildFolder + 'steroids'
+          },
+          args: ['platform', 'add', platformID]
+        }, function (error, result, code) {
+          if (error) {
+            grunt.fail.warn('Cordova platform install failed: ' + error, code);
+            nextPlugin('error');
+            return;
+          } else {
+            nextPlugin();
+          }
+        });
+      } else {
+        console.log('  ' + platformID + ' (skipped)');
+        nextPlugin();
+      }
+    }, function () {
+      console.log('Finished installing Cordova platforms');
+      done();
+    });
+  });
+
+
   grunt.registerMultiTask('cordova-plugin', 'Add plugins', function() {
     var done = this.async();
 
@@ -188,24 +240,31 @@ module.exports = function(grunt) {
 
     console.log('Installing Cordova plugins:');
     async.eachSeries(options.plugins, function (pluginID, nextPlugin) {
-      console.log('  ' + pluginID);
-      grunt.util.spawn({
-        cmd: options.cordovaPath + 'cordova',
-        opts: {
-          cwd: options.buildFolder + 'steroids'
-        },
-        args: ['plugin', 'add', pluginID]
-      }, function (error, result, code) {
-        if (error) {
-          grunt.fail.warn('Cordova plugin install failed: ' + error, code);
-          nextPlugin('error');
-          return;
-        } else {
-          nextPlugin();
-        }
-      });
+      if (!grunt.file.exists(options.buildFolder + 'steroids/plugins/' + pluginID)) {
+        console.log('  ' + pluginID);
+        grunt.util.spawn({
+          cmd: options.cordovaPath + 'cordova',
+          opts: {
+            cwd: options.buildFolder + 'steroids'
+          },
+          args: ['plugin', 'add', pluginID]
+        }, function (error, result, code) {
+          if (error) {
+            grunt.fail.warn('Cordova plugin install failed: ' + error, code);
+            nextPlugin('error');
+            return;
+          } else {
+            nextPlugin();
+          }
+        });
+      } else {
+        console.log('  ' + pluginID + ' (skipped)');
+        nextPlugin();
+      }
     }, function () {
       console.log('Finished installing Cordova plugins');
+      grunt.file.mkdir(options.buildFolder + 'steroids/etc/www');
+      plugman.prepare(options.buildFolder + 'steroids/etc', 'ios', options.buildFolder + 'steroids/plugins');
       done();
     });
   });
