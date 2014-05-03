@@ -13,6 +13,8 @@ module.exports = function (success, fail, service, action, args) {
       uuid: 'BD905752-CCBB-4C35-BF7D-178E2F7930B8',
       model: ''
     });
+  } else if ((service === 'NetworkStatus') && (action === 'getConnectionInfo')) {
+    success('wifi');
   } else if (success) {
     success();
   }
