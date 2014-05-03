@@ -292,9 +292,9 @@ module.exports = function(grunt) {
     var writeModule  = require('cordova-js/tasks/lib/write-module');
     var writeScript  = require('cordova-js/tasks/lib/write-script');
 
-    var modules = collectFiles(path.join('node_modules', 'cordova-js', 'src', 'common'));
-    var scripts = collectFiles(path.join('node_modules', 'cordova-js', 'src', 'scripts'));
-    modules[''] = path.join('node_modules', 'cordova-js', 'src', 'cordova.js');
+    var modules = collectFiles(path.join(__dirname, '..', 'node_modules', 'cordova-js', 'src', 'common'));
+    var scripts = collectFiles(path.join(__dirname, '..', 'node_modules', 'cordova-js', 'src', 'scripts'));
+    modules[''] = path.join(__dirname, '..', 'node_modules', 'cordova-js', 'src', 'cordova.js');
     copyProps(modules, collectFiles(path.join(__dirname, '..', 'etc', 'phantomjs')));
 
     var output = [];
