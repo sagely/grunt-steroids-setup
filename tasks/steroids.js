@@ -214,6 +214,8 @@ module.exports = function(grunt) {
       }
     }, function () {
       console.log('Finished installing Cordova platforms');
+      grunt.file.mkdir(options.buildFolder + 'steroids/etc/www');
+      plugman.prepare(options.buildFolder + 'steroids/etc', options.platforms[0], options.buildFolder + 'steroids/plugins');
       done();
     });
   });
@@ -265,8 +267,6 @@ module.exports = function(grunt) {
       }
     }, function () {
       console.log('Finished installing Cordova plugins');
-      grunt.file.mkdir(options.buildFolder + 'steroids/etc/www');
-      plugman.prepare(options.buildFolder + 'steroids/etc', 'ios', options.buildFolder + 'steroids/plugins');
       done();
     });
   });
