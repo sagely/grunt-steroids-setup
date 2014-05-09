@@ -215,7 +215,7 @@ module.exports = function(grunt) {
     }, function () {
       console.log('Finished installing Cordova platforms');
       grunt.file.mkdir(options.buildFolder + 'steroids/etc/www');
-      plugman.prepare(options.buildFolder + 'steroids/etc', options.platforms[0], options.buildFolder + 'steroids/plugins');
+      plugman.prepare(options.buildFolder + 'steroids/etc', options.platforms[0], options.buildFolder + 'steroids/plugins', options.buildFolder + 'steroids/etc/www');
       done();
     });
   });
