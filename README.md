@@ -17,14 +17,14 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('grunt-steroids-setup');
 ```
 
-## The "steroids-setup" task
+## The "steroids_create" task
 
 ### Overview
-In your project's Gruntfile, add a section named `steroids-setup` to the data object passed into `grunt.initConfig()`.
+In your project's Gruntfile, add a section named `steroids_create` to the data object passed into `grunt.initConfig()`.
 
 ```js
 grunt.initConfig({
-  'steroids-setup': {
+  'steroids_create': {
     options: {
       // Task-specific options go here.
     },
