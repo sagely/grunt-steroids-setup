@@ -17,6 +17,7 @@ module.exports = function (grunt) {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
       buildFolder: './build',
+      device: 'iphone_retina_4_inch',
       steroidsPath: ''
     });
 
@@ -46,7 +47,7 @@ module.exports = function (grunt) {
           running = true;
 
           grunt.log.writeln('Starting simulator...');
-          steroids.stdin.write('simulator\n');
+          steroids.stdin.write('simulator ' + options.device + '\n');
         }
         if (data && data.toString().indexOf('Number of clients connected') > 0 && running) {
           setTimeout(function () {
