@@ -15,7 +15,7 @@ module.exports = function (grunt) {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
       buildFolder: './build',
-      steroidsPath: ''
+      steroidsPath: __dirname + '/../node_modules/steroids/bin/'
     });
 
     // Make sure the paths have a trailing slash

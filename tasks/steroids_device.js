@@ -18,7 +18,7 @@ module.exports = function (grunt) {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
       buildFolder: './build',
-      steroidsPath: ''
+      steroidsPath: __dirname + '/../node_modules/steroids/bin/'
     });
 
     // Make sure the paths have a trailing slash
@@ -33,7 +33,7 @@ module.exports = function (grunt) {
     }
 
     grunt.log.writeln('Starting steroids...');
-    var steroids = spawn('steroids', ['connect', '--terminal-qrcode'], {
+    var steroids = spawn(options.steroidsPath + 'steroids', ['connect', '--terminal-qrcode'], {
       cwd: options.buildFolder + 'steroids'
     });
 

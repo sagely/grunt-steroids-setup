@@ -15,7 +15,8 @@ module.exports = function (grunt) {
   grunt.registerMultiTask('cordova_phantomjs', 'Generate a cordova file for PhantomJS', function () {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-      buildFolder: './build'
+      buildFolder: './build',
+      cordovaPath: __dirname + '/../node_modules/cordova/bin/'
     });
 
     var outputFolder = path.join(options.buildFolder, 'steroids', 'etc', 'www');

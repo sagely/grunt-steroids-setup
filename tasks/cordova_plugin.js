@@ -17,7 +17,7 @@ module.exports = function (grunt) {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
       buildFolder: './build',
-      cordovaPath: '',
+      cordovaPath: __dirname + '/../node_modules/cordova/bin/',
       plugins: []
     });
 
