@@ -1,7 +1,7 @@
 {
   "name": "grunt-steroids-setup",
   "description": "Script the creation of a steriods build",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "homepage": "https://github.com/TeamPraxis/grunt-steroids-setup",
   "author": {
     "name": "Justin Zaun",
@@ -26,7 +26,7 @@
   "dependencies": {
     "async": "0.2.10",
     "cordova-js": "3.5.3",
-    "cordova": "3.1.0-0.2.0",
+    "cordova": "3.4.1-0.1.0",
     "steroids": "3.1.28",
     "plugman": "0.21.0",
     "byline": "4.1.1"
