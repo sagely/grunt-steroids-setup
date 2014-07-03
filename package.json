@@ -1,7 +1,7 @@
 {
   "name": "grunt-steroids-setup",
   "description": "Script the creation of a steriods build",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "homepage": "https://github.com/TeamPraxis/grunt-steroids-setup",
   "author": {
     "name": "Justin Zaun",

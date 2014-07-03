@@ -3,10 +3,11 @@
  */
 
 var modulemapper = require('cordova/modulemapper');
+var channel = require('cordova/channel');
 
 exports.load = function (callback) {
 
-  setTimeout(function () {
+  channel.onPluginsReady.subscribe(function () {
     // Loop through all the plugins and then through their clobbers and merges.
     var moduleList = require("cordova/plugin_list");
     for (var i = 0; i < moduleList.length; i++) {
@@ -29,5 +30,5 @@ exports.load = function (callback) {
       }
     }
     callback();
-  }, 1);
+  });
 };
