@@ -1,6 +1,6 @@
 {
   "name": "grunt-steroids-setup",
-  "description": "Script the creation of a steriods build",
+  "description": "Add grunt tasks for several Appgyver Steroids commands",
   "version": "0.0.11",
   "homepage": "https://github.com/TeamPraxis/grunt-steroids-setup",
   "author": {
